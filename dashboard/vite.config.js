@@ -2,10 +2,14 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
 export default defineConfig({
+  // Fixes the blank page on GitHub Pages by using relative asset paths
+  base: './',
+
   plugins: [
     react(),
     {
       name: 'cors-bypass-proxy',
+      // This continues to work seamlessly when testing locally with 'npm run dev'
       configureServer(server) {
         server.middlewares.use('/api/proxy', async (req, res) => {
           const urlObj = new URL(req.url, 'http://localhost:3000');
