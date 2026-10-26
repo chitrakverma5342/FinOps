@@ -5,6 +5,10 @@ on:
     branches: [ "main", "master" ]
   pull_request:
     branches: [ "main", "master" ]
+  permissions:
+    contents: read
+    pages: write
+    id-token: write
 
 jobs:
   backend-test:
@@ -67,3 +71,24 @@ jobs:
       - name: Build Production Bundle (Vite)
         working-directory: dashboard
         run: npm run build
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages Artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          # Vite outputs to the 'dist' directory by default
+          path: dashboard/dist
+
+  deploy:
+    name: Deploy to GitHub Pages
+    needs: frontend-build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
