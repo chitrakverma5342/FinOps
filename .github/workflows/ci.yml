@@ -1,14 +1,16 @@
 name: FinOps Cost Guardian CI
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
 on:
   push:
     branches: [ "main", "master" ]
   pull_request:
     branches: [ "main", "master" ]
-  permissions:
-    contents: read
-    pages: write
-    id-token: write
+  
 
 jobs:
   backend-test:
